@@ -1,0 +1,12 @@
+swn,ne,wne,wn,ne,wn,ne,wn,n,sne,wne,swn,sn,sn,n,ne
+wn,,,s,e,we,sw,se,w,sn,se,wne,wne,wne,we,swe
+w,se,swe,wn,se,we,wn,ne,swe,wne,wne,we,sw,,s,sne
+w,n,ne,sw,sn,,se,w,ne,we,w,se,swn,s,ne,wne
+swe,swe,w,sne,swn,s,sne,swe,we,w,,sn,sn,sn,s,se
+swn,n,s,n,sne,wne,wn,sn,,e,swe,swn,n,ne,wn,ne
+wn,se,swn,e,wne,we,w,ne,swe,w,sn,n,se,sw,se,swe
+sw,sn,sne,sw,se,w,se,sw,sne,w,sn,s,sne,swn,sn,ne
+wne,swn,ne,swn,sn,e,wne,wn,sne,w,sn,n,n,sne,wn,e
+we,wn,s,n,ne,sw,e,w,sne,swe,wne,we,sw,n,se,swe
+w,se,swn,se,we,wn,,s,n,sn,e,swe,wn,,sn,ne
+sw,sn,sn,sne,sw,se,swe,swn,s,sne,swe,swn,se,swe,swn,se
