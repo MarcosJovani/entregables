@@ -41,7 +41,7 @@ def matriz_distancia_desde_origen(size: Pair, grafo: UndirectedGraph) -> List[Li
     queue = Fifo()
     seen = set()
     queue.push(((0, 0), (0, 0)))
-    seen.add(0, 0)
+    seen.add((0, 0))
     matriz = crea_matriz(size[0],size[1])
     cont = 0
     matriz[0][0] = cont
@@ -51,7 +51,7 @@ def matriz_distancia_desde_origen(size: Pair, grafo: UndirectedGraph) -> List[Li
         for suc in grafo.succs(v):
             if suc not in seen:
                 seen.add(suc)
-                matriz[suc[0]][suc[1]] = cont + d((suc[0],suc[1]),(size[0]-1, size[1]-1))
+                matriz[suc[0]][suc[1]] = cont
                 queue.push((v, suc))
     return matriz
 
