@@ -82,9 +82,6 @@ def recuperador_camino(lista_aristas: List[Edge], v: Vertex) -> List[Vertex]:
     camino.reverse()
     return camino
 
-def contar_vertices(lista:List[int]) -> int:
-    return len(lista)-1
-
 # - Tiene dos parámetros,
 #   - El primero: una tupla con el tamaño del laberinto (num_rows, num_cols)
 #   - El segundo: el grafo del laberinto.
