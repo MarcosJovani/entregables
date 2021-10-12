@@ -47,12 +47,12 @@ def matriz_distancia_desde_origen(size: Pair, grafo: UndirectedGraph) -> List[Li
     matriz[0][0] = cont
     while len(queue)>0:
         u, v = queue.pop()
-        cont += 1
         for suc in grafo.succs(v):
             if suc not in seen:
                 seen.add(suc)
                 matriz[suc[0]][suc[1]] = cont
                 queue.push((v, suc))
+        cont += 1
     return matriz
 
 def recorredor_aristas_anchura(grafo: UndirectedGraph, v_inicial: Vertex) -> List[Edge]:
