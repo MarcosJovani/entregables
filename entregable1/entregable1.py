@@ -30,7 +30,6 @@ def read_data(f) -> Tuple[Pair, UndirectedGraph]:
          for c in range(cols) for d in 'nsew' if d not in m[r][c]]
     return (rows, cols), UndirectedGraph(E=e)
 
-
 def crea_matriz(rows:int, cols: int) -> List[List[int]]:
     matriz = []
     for i in range(rows):
@@ -44,18 +43,38 @@ def matriz_distancia_desde_origen(size: Pair, grafo: UndirectedGraph) -> List[Li
     queue.push(((0, 0), (0, 0)))
     seen.add((0, 0))
     matriz = crea_matriz(size[0],size[1])
-    cont = 0
-    matriz[0][0] = cont
+    matriz[0][0] = 0
+    u, v = queue.pop()
+    matriz[v[0]][v[1]] = 1
+    queue.push((u, u))
     while len(queue)>0:
         u, v = queue.pop()
-        cont += 1
-      #  print(cont)
+        padre = matriz[v[0]][v[1]]
         for suc in grafo.succs(v):
             if suc not in seen:
                 seen.add(suc)
-                matriz[suc[0]][suc[1]] = cont
+                matriz[suc[0]][suc[1]] = padre + 1
                 queue.push((v, suc))
+    return matriz
 
+def matriz_distancia_desde_destino(size: Pair, grafo: UndirectedGraph) -> List[List[int]]:
+    queue = Fifo()
+    seen = set()
+    queue.push(((size[0]-1, size[1]-1), (size[0]-1, size[1]-1)))
+    seen.add((size[0]-1, size[1]-1))
+    matriz = crea_matriz(size[0], size[1])
+    matriz[size[0]-1][size[1]-1] = 0
+    u, v = queue.pop()
+    matriz[v[0]][v[1]] = 1
+    queue.push((u, u))
+    while len(queue)>0:
+        u, v = queue.pop()
+        padre = matriz[v[0]][v[1]]
+        for suc in grafo.succs(v):
+            if suc not in seen:
+                seen.add(suc)
+                matriz[suc[0]][suc[1]] = padre + 1
+                queue.push((v, suc))
     return matriz
 
 def recorredor_aristas_anchura(grafo: UndirectedGraph, v_inicial: Vertex) -> List[Edge]:
@@ -72,28 +91,6 @@ def recorredor_aristas_anchura(grafo: UndirectedGraph, v_inicial: Vertex) -> Lis
                 seen.add(suc)
                 queue.push((v, suc))
     return aristas
-
-def recorredor_vertices_anchura(size: Pair, grafo: UndirectedGraph, v_inicial: Vertex) -> List[Vertex]:
-    vertices = []
-    queue = Fifo()
-    seen = set()
-    queue.push(((0, 0), (0, 0)))
-    seen.add((0, 0))
-    matriz = crea_matriz(size[0],size[1])
-    cont = 0
-    matriz[0][0] = cont
-    queue.push(v_inicial)
-    seen.add(v_inicial)
-    while len(queue) > 0:
-        v = queue.pop()
-        vertices.append(v)
-        for suc in grafo.succs(v):
-            if suc not in seen:
-                matriz[suc[0]][suc[1]] = cont
-                seen.add(suc)
-                queue.push(suc)
-        cont+= 1
-    return vertices
 
 def recuperador_camino(lista_aristas: List[Edge], v: Vertex) -> List[Vertex]:
     bp = {}
@@ -116,21 +113,32 @@ def recuperador_camino(lista_aristas: List[Edge], v: Vertex) -> List[Vertex]:
 #    - Una lista de vértices con el camino desde el tesoro hasta la salida.
 def process(size: Pair, lab: UndirectedGraph) -> Tuple[Pair, Path, Path]:
     distancia_origen = matriz_distancia_desde_origen(size, lab)
+    distancia_destino = matriz_distancia_desde_destino(size, lab)
     max = distancia_origen[0][0]
     maxr = 0
     maxc = 0
     size0 = list(range(size[0]))
     size1 = list(range(size[1]))
-    for r, c in itertools.product(size0, size1):      #aqui cambia de 2 bucles 2 a uno, aunque no se que hace itertools :)
-        aristasrc = recorredor_aristas_anchura(lab, (r, c))
-        distancia_destino = recuperador_camino(aristasrc, (size[0]-1, size[1]-1))
-        distancia = distancia_origen[r][c] + len(distancia_destino) - 1
+
+    for r, c in itertools.product(size0, size1):
+        distancia = distancia_origen[r][c] + distancia_destino[r][c]
         if distancia > max:
             max = distancia
             maxr = r
             maxc = c
-            camino_origen = recuperador_camino(recorredor_aristas_anchura(lab, (0, 0)), (r, c))
-            camino_destino = distancia_destino
+        else:
+            if distancia == max and r < maxr:
+                max = distancia
+                maxr = r
+                maxc = c
+            else:
+                if distancia == max and r == maxr and c < maxc:
+                    max = distancia
+                    maxr = r
+                    maxc = c
+
+    camino_origen = recuperador_camino(recorredor_aristas_anchura(lab, (0, 0)), (maxr, maxc))
+    camino_destino = recuperador_camino(recorredor_aristas_anchura(lab, (maxr, maxc)), (size[0] - 1, size[1] - 1))
     return (maxr, maxc), camino_origen, camino_destino
 
 
@@ -146,8 +154,8 @@ def process(size: Pair, lab: UndirectedGraph) -> Tuple[Pair, Path, Path]:
 def show_results(pos: Pair, c1: Path, c2: Path):
     print(pos[0])
     print(pos[1])
-    print(len(c1))
-    print(len(c2))
+    print(len(c1) - 1)
+    print(len(c2) - 1)
 
 # -----------------------------------------------------
 

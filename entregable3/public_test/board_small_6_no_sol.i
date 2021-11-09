@@ -1,0 +1,4 @@
+#ooo.
+ooooo
+ooooo
+ooooo
