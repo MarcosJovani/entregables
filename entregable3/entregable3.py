@@ -18,7 +18,7 @@ Solution = Tuple[Step,...]  # Tupla con los movimientos que resuelven el puzle
 def read_data(f) -> Board:
     board = []
     for line in f.readlines():
-        board.append(list(line[:-1]))       # -1 porque al final hay un caracter de salto de linea
+        board.append(list(line[:-1]))
     return board
 
 
@@ -28,7 +28,11 @@ def process(board: Board) -> Optional[Solution]:
 
 
 def show_results(solution: Optional[Solution]):
-    pass
+    if solution is None:
+        print('THERE IS NO SOLUTION')
+    else:
+        for step in solution:
+            print(step[0][0], step[0][1], step[1][0], step[1][1])
 
 
 # Programa principal ------------------------------------------------------
@@ -36,4 +40,4 @@ def show_results(solution: Optional[Solution]):
 if __name__ == '__main__':
     board = read_data(sys.stdin)
     solution = process(board)
-  #  show_results(solution)
+    show_results(solution)
