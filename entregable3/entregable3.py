@@ -18,7 +18,7 @@ Solution = Tuple[Step,...]  # Tupla con los movimientos que resuelven el puzle
 def read_data(f) -> Board:
     board = []
     for line in f.readlines():
-        board.append(list(line[:-1]))
+        board.append(list(line[:-1]))       # -1 porque al final hay un caracter de salto de linea
     return board
 
 
